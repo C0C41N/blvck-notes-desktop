@@ -1,5 +1,4 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
-import { type } from 'os'
 
 import { IListWin } from './list'
 import { INote, INoteWin } from './note'
@@ -9,11 +8,7 @@ export type NoteFile = INote[]
 export type rFile = WinFile | NoteFile
 
 class userFile {
-	protected fileName = ''
-	protected path = ''
-
 	protected constructor(protected file: string) {
-		this.assignProperties()
 		this.createPath()
 	}
 
@@ -22,13 +17,6 @@ class userFile {
 		const content: rFile = JSON.parse(contentString)
 
 		return content.length > 0 ? content : false
-	}
-
-	private assignProperties() {
-		const parts = this.file.split('/')
-
-		this.fileName = parts.pop() as string
-		this.path = parts.join('/')
 	}
 
 	private createPath() {
@@ -48,7 +36,7 @@ class userFile {
 		writeFileSync(path, JSON.stringify([]))
 	}
 
-	private isFile = (path: string) => path.length > this.path.length
+	private isFile = (path: string) => path === this.file
 }
 
 export class userFileWin extends userFile {
