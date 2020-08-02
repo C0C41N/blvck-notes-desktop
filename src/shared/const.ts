@@ -1,6 +1,7 @@
 import { randomKey } from './func'
+import { INoteWin } from './window'
 
-export const newNoteProps = () => {
+export const newNoteProps = (): INoteWin => {
 	return {
 		id: randomKey(8),
 		pos: {

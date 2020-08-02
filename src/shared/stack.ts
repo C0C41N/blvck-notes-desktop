@@ -6,6 +6,8 @@ import { createListWindow, createNoteWindow, IListWin, INoteWin } from './window
 export class Stack {
 	private stack: stack = {}
 
+	public count = () => Object.keys(this.stack).length
+
 	public createNoteWindow(winProps: INoteWin) {
 		new createNoteWindow(winProps, this.push.bind(this), this.close.bind(this))
 	}

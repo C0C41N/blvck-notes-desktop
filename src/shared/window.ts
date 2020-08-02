@@ -1,6 +1,5 @@
 import { BrowserWindow as Window, BrowserWindowConstructorOptions as options } from 'electron'
 
-import { log } from '../debug/log'
 import { winURL } from './const'
 import { randomKey } from './func'
 
@@ -79,21 +78,6 @@ type Push = (id: string, window: Window) => void
 type Close = (id: string) => void
 
 //
-
-interface createWindowArgs {
-	props: INoteWin | IListWin
-	id: string
-	push: Push
-	close: Close
-}
-
-export interface createNoteWindowArgs extends createWindowArgs {
-	props: INoteWin
-}
-
-export interface createListWindowArgs extends createWindowArgs {
-	props: IListWin
-}
 
 export interface INoteWin {
 	type: 'note'
