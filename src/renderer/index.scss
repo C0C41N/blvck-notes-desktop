@@ -10,3 +10,20 @@
 body {
 	font-family: 'Montserrat', sans-serif;
 }
+
+::-webkit-scrollbar {
+	height: 3px;
+	width: 3px;
+}
+
+::-webkit-scrollbar-track {
+	background: #3e3e3e;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #cccccc;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #2e2e2e;
+}
