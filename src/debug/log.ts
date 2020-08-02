@@ -1,6 +1,6 @@
 import { appendFileSync, writeFileSync } from 'fs'
 
-const file = __dirname + '/log.json'
+const file = __dirname + '/log.log'
 
 export function cls() {
 	writeFileSync(file, '')
