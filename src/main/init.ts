@@ -1,12 +1,14 @@
-import { readWin } from './ts/readUserRes'
+import { userFileWin } from '../shared/userFiles'
 
 export default function () {
-	const ReadWin = new readWin()
-	const winFile = ReadWin.read()
+	const winFile = new userFileWin()
+	const winFileContent = winFile.read()
 
-	if (winFile) {
+	if (winFileContent) {
 		// Create Windows according to winFile
-	} else {
+	}
+	
+	else {
 		// Create new Note
 	}
 }

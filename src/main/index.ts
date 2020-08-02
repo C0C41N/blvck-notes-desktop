@@ -15,3 +15,9 @@ const onActivate = () => {
 app.on('ready', init)
 app.on('window-all-closed', onAllClosed)
 app.on('activate', onActivate)
+
+if (process.env.NODE_ENV !== 'development') {
+	global.__static = require('path')
+		.join(__dirname, '/static')
+		.replace(/\\/g, '\\\\')
+}

@@ -8,7 +8,7 @@ export type WinFile = (INoteWin | IListWin)[]
 export type NoteFile = INote[]
 export type rFile = WinFile | NoteFile
 
-class readFile {
+class userFile {
 	protected fileName = ''
 	protected path = ''
 
@@ -51,7 +51,7 @@ class readFile {
 	private isFile = (path: string) => path.length > this.path.length
 }
 
-export class readWin extends readFile {
+export class userFileWin extends userFile {
 	public constructor() {
 		super('user/windows.json')
 	}

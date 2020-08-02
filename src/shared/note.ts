@@ -1,7 +1,7 @@
 import { BrowserWindow, BrowserWindowConstructorOptions as options } from 'electron'
 
-import { winURL } from '../misc'
-import { readWin } from './readUserRes'
+import { winURL } from './const'
+import { userFileWin } from './userFiles'
 
 export interface INoteWin {
 	type: 'note'
