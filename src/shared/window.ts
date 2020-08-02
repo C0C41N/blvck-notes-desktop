@@ -2,6 +2,7 @@ import { BrowserWindow as Window, BrowserWindowConstructorOptions as options } f
 
 import { log } from '../debug/log'
 import { winURL } from './const'
+import { randomKey } from './func'
 
 class createWindow {
 	private options: options = {
@@ -13,25 +14,27 @@ class createWindow {
 		},
 	}
 
-	protected pos: IXY = { x: 0, y: 0 }
-	protected size: IXY = { x: 0, y: 0 }
+	protected id: string
+	protected pos: IXY
+	protected size: IXY
 
-	protected window: Window | null = new Window(this.options)
+	public readonly window: Window | null
 
-	public getWindow = () => this.window
+	protected constructor(
+		protected winProps: INoteWin | IListWin,
+		protected push: Push,
+		protected close: Close
+	) {
+		this.id = randomKey(8)
+		this.pos = this.winProps.pos
+		this.size = this.winProps.size
 
-	protected constructor(protected winProps: INoteWin | IListWin) {
-		this.pos = winProps.pos
-		this.size = winProps.size
+		this.window = new Window(this.options)
 
-		if (this.window) {
-			this.window.removeMenu()
-
-			this.window.on('ready-to-show', this.onReady.bind(this))
-			this.window.on('closed', this.onClosed.bind(this))
-
-			this.window.loadURL(winURL)
-		}
+		this.window.removeMenu()
+		this.window.on('ready-to-show', this.onReady.bind(this))
+		this.window.on('closed', this.onClosed.bind(this))
+		this.window.loadURL(winURL)
 	}
 
 	private onReady() {
@@ -40,24 +43,56 @@ class createWindow {
 			this.window.setPosition(this.pos.x, this.pos.y)
 
 			this.window.show()
+
+			this.push(this.id, this.window)
 		}
 	}
 
 	private onClosed() {
-		this.window = null
+		this.close(this.id)
 	}
 }
 
 export class createNoteWindow extends createWindow {
-	constructor(noteProps: INoteWin) {
-		super(noteProps)
+	constructor(
+		protected winProps: INoteWin,
+		protected push: Push,
+		protected close: Close
+	) {
+		super(winProps, push, close)
 	}
 }
 
 export class createListWindow extends createWindow {
-	constructor(listProps: IListWin) {
-		super(listProps)
+	constructor(
+		protected winProps: IListWin,
+		protected push: Push,
+		protected close: Close
+	) {
+		super(winProps, push, close)
 	}
+}
+
+//
+
+type Push = (id: string, window: Window) => void
+type Close = (id: string) => void
+
+//
+
+interface createWindowArgs {
+	props: INoteWin | IListWin
+	id: string
+	push: Push
+	close: Close
+}
+
+export interface createNoteWindowArgs extends createWindowArgs {
+	props: INoteWin
+}
+
+export interface createListWindowArgs extends createWindowArgs {
+	props: IListWin
 }
 
 export interface INoteWin {

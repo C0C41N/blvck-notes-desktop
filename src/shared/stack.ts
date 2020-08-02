@@ -1,20 +1,34 @@
-import { BrowserWindow } from 'electron'
+import { BrowserWindow as Window } from 'electron'
 
 import { log } from '../debug/log'
 import { createListWindow, createNoteWindow, IListWin, INoteWin } from './window'
 
-export type stack = (BrowserWindow | null)[]
-
 export class Stack {
-	private stack: stack = []
+	private stack: stack = {}
 
-	public createNoteWindow(noteProps: INoteWin) {
-		const createWindow = new createNoteWindow(noteProps)
-		this.stack.push(createWindow.getWindow())
+	public createNoteWindow(winProps: INoteWin) {
+		new createNoteWindow(winProps, this.push.bind(this), this.close.bind(this))
 	}
 
-	public createListWindow(listProps: IListWin) {
-		const createWindow = new createListWindow(listProps)
-		this.stack.push(createWindow.getWindow())
+	public createListWindow(winProps: IListWin) {
+		new createListWindow(winProps, this.push.bind(this), this.close.bind(this))
 	}
+
+	private push(id: string, window: Window) {
+		Object.assign(this.stack, { [id]: window })
+
+		log(['Push', { stack: this.stack }])
+	}
+
+	private close(id: string) {
+		delete this.stack[id]
+
+		log(['Close', { stack: this.stack }])
+	}
+}
+
+//
+
+export interface stack {
+	[index: string]: Window
 }
