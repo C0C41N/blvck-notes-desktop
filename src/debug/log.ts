@@ -1,6 +1,6 @@
 import { appendFileSync, writeFileSync } from 'fs'
 
-const file = __dirname + '/log.log'
+const file = __dirname + '/.log'
 
 export function cls() {
 	writeFileSync(file, '')
@@ -9,5 +9,5 @@ export function cls() {
 export function log(o: any) {
 	const time = new Date().toString().split(' ')[4]
 	const txt = JSON.stringify(o, null, 2)
-	appendFileSync(file, `[${time}]\n\n${txt}\n`)
+	appendFileSync(file, `[${time}]\n\n${txt}\n\n`)
 }

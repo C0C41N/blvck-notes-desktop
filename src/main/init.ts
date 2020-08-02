@@ -1,20 +1,31 @@
-
-
 import { cls, log } from '../debug/log'
+import { Stack } from '../shared/stack'
 import { userFileWin } from '../shared/userFiles'
 
 export default function () {
 	const winFile = new userFileWin()
 	const winFileContent = winFile.read()
 
-	cls()
-	log(winFileContent)
+	const stack = new Stack()
 
+	cls()
+	
 	if (winFileContent) {
 		// Create Windows according to winFile
 	}
 	
 	else {
-		// Create new Note
+		stack.createNoteWindow({
+			id: '',
+			pos: {
+				x: 100,
+				y: 100
+			},
+			size: {
+				x: 500,
+				y: 500
+			},
+			type: 'note'
+		})
 	}
 }

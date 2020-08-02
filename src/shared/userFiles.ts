@@ -1,11 +1,10 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 
-import { IListWin } from './list'
-import { INote, INoteWin } from './note'
+import { IListWin, INote, INoteWin } from './window'
 
 export type WinFile = (INoteWin | IListWin)[]
 export type NoteFile = INote[]
-export type rFile = WinFile | NoteFile
+export type RFile = WinFile | NoteFile
 
 class userFile {
 	protected constructor(protected file: string) {
@@ -14,7 +13,7 @@ class userFile {
 
 	public read() {
 		const contentString = readFileSync(this.file).toString()
-		const content: rFile = JSON.parse(contentString)
+		const content: RFile = JSON.parse(contentString)
 
 		return content.length > 0 ? content : false
 	}
