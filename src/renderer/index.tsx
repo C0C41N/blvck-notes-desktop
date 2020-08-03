@@ -8,7 +8,10 @@ import { createMuiTheme } from '@material-ui/core/styles'
 import { ThemeProvider } from '@material-ui/styles'
 
 import App from './App'
+import { ipcListenInit } from './func'
 import store from './redux'
+
+ipcListenInit()
 
 const theme = createMuiTheme({
 	palette: {

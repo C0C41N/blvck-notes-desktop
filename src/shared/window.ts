@@ -2,7 +2,6 @@ import { BrowserWindow as Window, BrowserWindowConstructorOptions as options } f
 
 import { log } from '../log'
 import { winURL } from './const'
-import { randomKey } from './func'
 
 class createWindow {
 	private options: options = {
@@ -14,18 +13,16 @@ class createWindow {
 		},
 	}
 
-	protected id: string
 	protected pos: IXY
 	protected size: IXY
 
-	protected window: Window | null
+	protected window: Window
 
 	protected constructor(
+		protected id: string,
 		protected winProps: INoteWin | IListWin,
-		protected push: Push,
-		protected close: Close
+		protected closed: Closed
 	) {
-		this.id = randomKey(8)
 		this.pos = this.winProps.pos
 		this.size = this.winProps.size
 
@@ -38,53 +35,53 @@ class createWindow {
 	}
 
 	protected onReady() {
-		if (!this.window) return
 		this.window.setSize(this.size.x, this.size.y)
 		this.window.setPosition(this.pos.x, this.pos.y)
 		this.window.show()
 	}
 
 	private onClosed() {
-		this.close(this.id)
+		this.closed(this.id)
+	}
+
+	public close() {
+		this.window.close()
 	}
 }
 
 export class createNoteWindow extends createWindow {
 	constructor(
+		protected id: string,
 		protected winProps: INoteWin,
-		protected push: Push,
-		protected close: Close
+		protected closed: Closed
 	) {
-		super(winProps, push, close)
+		super(id, winProps, closed)
 	}
 
 	protected onReady() {
 		super.onReady()
-		if (!this.window) return
-		this.push(this.id, this.window, 'note')
+		this.window.webContents.send('init', this.id, 'note', this.window)
 	}
 }
 
 export class createListWindow extends createWindow {
 	constructor(
+		protected id: string,
 		protected winProps: IListWin,
-		protected push: Push,
-		protected close: Close
+		protected closed: Closed
 	) {
-		super(winProps, push, close)
+		super(id, winProps, closed)
 	}
 
 	protected onReady() {
 		super.onReady()
-		if (!this.window) return
-		this.push(this.id, this.window, 'list')
+		this.window.webContents.send('init', this.id, 'list', this.window)
 	}
 }
 
 //
 
-export type Push = (id: string, window: Window, type: 'note' | 'list') => void
-export type Close = (id: string) => void
+export type Closed = (id: string) => void
 
 //
 

@@ -1,6 +1,7 @@
-import { BrowserWindow as Window } from 'electron'
+import { ipcMain } from 'electron'
 
 import { log } from '../log'
+import { randomKey } from './func'
 import { createListWindow, createNoteWindow, IListWin, INoteWin } from './window'
 
 export class Stack {
@@ -8,24 +9,36 @@ export class Stack {
 
 	public count = () => Object.keys(this.stack).length
 
+	public constructor() {
+		ipcMain.on('close', (_, id) => {
+			this.stack[id].window.close()
+		})
+	}
+
 	public createNoteWindow(winProps: INoteWin) {
-		new createNoteWindow(winProps, this.push.bind(this), this.close.bind(this))
+		const id = randomKey(8)
+		const window = new createNoteWindow(id, winProps, this.closed.bind(this))
+		this.push(id, window, 'note')
 	}
 
 	public createListWindow(winProps: IListWin) {
-		new createListWindow(winProps, this.push.bind(this), this.close.bind(this))
+		const id = randomKey(8)
+		const window = new createListWindow(id, winProps, this.closed.bind(this))
+		this.push(id, window, 'list')
 	}
 
-	private push(id: string, window: Window, type: 'note' | 'list') {
-		Object.assign(this.stack, { [id]: { id, type, window } })
-
-		log(['Push', { stack: this.stack }])
+	private push(
+		id: string,
+		window: createListWindow | createNoteWindow,
+		type: 'note' | 'list'
+	) {
+		Object.assign(this.stack, { [id]: { type, window } })
+		// log(['Push', { stack: this.count() }])
 	}
 
-	private close(id: string) {
+	private closed(id: string) {
 		delete this.stack[id]
-
-		log(['Close', { stack: this.stack }])
+		// log(['Close', { stack: this.count() }])
 	}
 }
 
@@ -35,6 +48,6 @@ export interface stack {
 	[index: string]: {
 		id: string
 		type: 'note' | 'list'
-		window: Window
+		window: createNoteWindow | createListWindow
 	}
 }

@@ -1,12 +1,12 @@
 import { App } from 'electron'
 import { IListWin, INoteWin } from 'src/shared/window'
 
-import { cls, log } from '../log'
+import { cls } from '../log'
 import { newNoteProps } from '../shared/const'
 import { Stack } from '../shared/stack'
 import { userFileWin, WinFile } from '../shared/userFiles'
 
-export function init (app: App) {
+export function init(app: App) {
 	const winFile = new userFileWin()
 	const winFileContent = winFile.read()
 	const stack = new Stack()
@@ -15,11 +15,10 @@ export function init (app: App) {
 	app.on('window-all-closed', onAllClosed)
 
 	cls()
-	
+
 	if (winFileContent) {
 		createWindows(winFileContent)
-	}
-	else {
+	} else {
 		createNewNoteWindow()
 	}
 
@@ -38,11 +37,13 @@ export function init (app: App) {
 	}
 
 	function createNoteWindows(notes: INoteWin[]) {
-		notes.forEach(e => { stack.createNoteWindow(e) })
+		notes.forEach(e => {
+			stack.createNoteWindow(e)
+		})
 	}
 
 	function createListWindow(lists: IListWin[]) {
-		if(lists.length > 0) stack.createListWindow(lists[0])
+		if (lists.length > 0) stack.createListWindow(lists[0])
 	}
 
 	function onActivate() {

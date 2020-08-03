@@ -1,10 +1,14 @@
 import { configureStore, createSlice, getDefaultMiddleware } from '@reduxjs/toolkit'
 
 import { reducers } from './reducer'
+import { winType } from './types'
 
 const middlewares = [...getDefaultMiddleware()]
 
-const initState = {}
+const initState = {
+	id: '',
+	type: null as winType,
+}
 
 const slice = createSlice({
 	name: 'main',
@@ -19,7 +23,7 @@ const store = configureStore({
 	middleware: middlewares,
 })
 
-export const {} = actions
+export const { setId, setType } = actions
 
 export default store
 
