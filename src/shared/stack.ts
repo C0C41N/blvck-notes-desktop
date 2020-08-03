@@ -1,6 +1,6 @@
 import { BrowserWindow as Window } from 'electron'
 
-import { log } from '../debug/log'
+import { log } from '../log'
 import { createListWindow, createNoteWindow, IListWin, INoteWin } from './window'
 
 export class Stack {
