@@ -16,8 +16,8 @@ export class Stack {
 		new createListWindow(winProps, this.push.bind(this), this.close.bind(this))
 	}
 
-	private push(id: string, window: Window) {
-		Object.assign(this.stack, { [id]: window })
+	private push(id: string, window: Window, type: 'note' | 'list') {
+		Object.assign(this.stack, { [id]: { id, type, window } })
 
 		log(['Push', { stack: this.stack }])
 	}
@@ -32,5 +32,9 @@ export class Stack {
 //
 
 export interface stack {
-	[index: string]: Window
+	[index: string]: {
+		id: string
+		type: 'note' | 'list'
+		window: Window
+	}
 }

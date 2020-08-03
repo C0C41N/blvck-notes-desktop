@@ -1,5 +1,6 @@
 import { BrowserWindow as Window, BrowserWindowConstructorOptions as options } from 'electron'
 
+import { log } from '../log'
 import { winURL } from './const'
 import { randomKey } from './func'
 
@@ -17,7 +18,7 @@ class createWindow {
 	protected pos: IXY
 	protected size: IXY
 
-	public readonly window: Window | null
+	protected window: Window | null
 
 	protected constructor(
 		protected winProps: INoteWin | IListWin,
@@ -29,22 +30,18 @@ class createWindow {
 		this.size = this.winProps.size
 
 		this.window = new Window(this.options)
-
 		this.window.removeMenu()
-		this.window.on('ready-to-show', this.onReady.bind(this))
-		this.window.on('closed', this.onClosed.bind(this))
 		this.window.loadURL(winURL)
+
+		this.window.on('closed', this.onClosed.bind(this))
+		this.window.on('ready-to-show', this.onReady.bind(this))
 	}
 
-	private onReady() {
-		if (this.window) {
-			this.window.setSize(this.size.x, this.size.y)
-			this.window.setPosition(this.pos.x, this.pos.y)
-
-			this.window.show()
-
-			this.push(this.id, this.window)
-		}
+	protected onReady() {
+		if (!this.window) return
+		this.window.setSize(this.size.x, this.size.y)
+		this.window.setPosition(this.pos.x, this.pos.y)
+		this.window.show()
 	}
 
 	private onClosed() {
@@ -60,6 +57,12 @@ export class createNoteWindow extends createWindow {
 	) {
 		super(winProps, push, close)
 	}
+
+	protected onReady() {
+		super.onReady()
+		if (!this.window) return
+		this.push(this.id, this.window, 'note')
+	}
 }
 
 export class createListWindow extends createWindow {
@@ -70,12 +73,18 @@ export class createListWindow extends createWindow {
 	) {
 		super(winProps, push, close)
 	}
+
+	protected onReady() {
+		super.onReady()
+		if (!this.window) return
+		this.push(this.id, this.window, 'list')
+	}
 }
 
 //
 
-type Push = (id: string, window: Window) => void
-type Close = (id: string) => void
+export type Push = (id: string, window: Window, type: 'note' | 'list') => void
+export type Close = (id: string) => void
 
 //
 
