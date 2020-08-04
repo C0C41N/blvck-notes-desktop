@@ -1,4 +1,6 @@
-import { BrowserWindow as Window, BrowserWindowConstructorOptions as options } from 'electron'
+import {
+	BrowserWindow as Window, BrowserWindowConstructorOptions as options, screen
+} from 'electron'
 
 import { log } from '../log'
 import { winURL } from './const'
@@ -23,7 +25,7 @@ class createWindow {
 		protected winProps: INoteWin | IListWin,
 		protected closed: Closed
 	) {
-		this.pos = this.winProps.pos
+		this.pos = this.convertPos()
 		this.size = this.winProps.size
 
 		this.window = new Window(this.options)
@@ -42,6 +44,22 @@ class createWindow {
 
 	private onClosed() {
 		this.closed(this.id)
+	}
+
+	private convertPos(): IXY {
+		const { height, width } = screen.getPrimaryDisplay().size
+		const { x: px, y: py } = this.winProps.pos
+		const { x: sx, y: sy } = this.winProps.size
+
+		const x = cal(px, width, sx)
+		const y = cal(py, height, sy)
+
+		return { x, y }
+
+		function cal(p: number, r: number, s: number) {
+			const i = Math.floor((p / 100) * r - s / 2)
+			return i > 0 ? i : 0
+		}
 	}
 
 	public close() {
