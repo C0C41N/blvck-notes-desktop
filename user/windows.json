@@ -1,6 +1,8 @@
 [
 	{
 		"id": "PUQIzNie",
+		"type": "note",
+		"theme": 0,
 		"pos": {
 			"x": 80,
 			"y": 30
@@ -8,7 +10,6 @@
 		"size": {
 			"x": 334,
 			"y": 337
-		},
-		"type": "note"
+		}
 	}
 ]

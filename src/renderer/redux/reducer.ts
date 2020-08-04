@@ -11,4 +11,8 @@ export const reducers = {
 	setType: (state: IState, action: PayloadAction<winType>) => {
 		state.type = action.payload
 	},
+
+	setTheme: (state: IState, action: PayloadAction<number>) => {
+		state.theme = action.payload
+	},
 }

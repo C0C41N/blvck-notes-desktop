@@ -16,7 +16,6 @@ class createWindow {
 	}
 
 	protected pos: IXY
-	protected size: IXY
 
 	protected window: Window
 
@@ -26,7 +25,6 @@ class createWindow {
 		protected closed: Closed
 	) {
 		this.pos = this.convertPos()
-		this.size = this.winProps.size
 
 		this.window = new Window(this.options)
 		this.window.removeMenu()
@@ -37,7 +35,7 @@ class createWindow {
 	}
 
 	protected onReady() {
-		this.window.setSize(this.size.x, this.size.y)
+		this.window.setSize(this.winProps.size.x, this.winProps.size.y)
 		this.window.setPosition(this.pos.x, this.pos.y)
 		this.window.show()
 	}
@@ -78,7 +76,7 @@ export class createNoteWindow extends createWindow {
 
 	protected onReady() {
 		super.onReady()
-		this.window.webContents.send('init', this.id, 'note', this.window)
+		this.window.webContents.send('init', this.id, 'note', this.winProps.theme)
 	}
 }
 
@@ -93,7 +91,7 @@ export class createListWindow extends createWindow {
 
 	protected onReady() {
 		super.onReady()
-		this.window.webContents.send('init', this.id, 'list', this.window)
+		this.window.webContents.send('init', this.id, 'list')
 	}
 }
 
@@ -106,6 +104,7 @@ export type Closed = (id: string) => void
 export interface INoteWin {
 	type: 'note'
 	id: string
+	theme: number
 	size: IXY
 	pos: IXY
 }

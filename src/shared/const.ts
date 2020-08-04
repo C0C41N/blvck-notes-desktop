@@ -4,6 +4,8 @@ import { INoteWin } from './window'
 export const newNoteProps = (): INoteWin => {
 	return {
 		id: randomKey(8),
+		type: 'note',
+		theme: 0,
 		pos: {
 			x: 0,
 			y: 0,
@@ -12,7 +14,6 @@ export const newNoteProps = (): INoteWin => {
 			x: 200,
 			y: 200,
 		},
-		type: 'note',
 	}
 }
 

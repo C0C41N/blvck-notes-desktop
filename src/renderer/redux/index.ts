@@ -8,6 +8,7 @@ const middlewares = [...getDefaultMiddleware()]
 const initState = {
 	id: '',
 	type: null as winType,
+	theme: 0,
 }
 
 const slice = createSlice({
@@ -23,7 +24,7 @@ const store = configureStore({
 	middleware: middlewares,
 })
 
-export const { setId, setType } = actions
+export const { setId, setType, setTheme } = actions
 
 export default store
 
