@@ -6,7 +6,7 @@ import { winType } from '../redux/types'
 
 const dispatch = store.dispatch
 
-export function funcInit() {
+export async function funcInit() {
 	ipcListenInit()
 }
 

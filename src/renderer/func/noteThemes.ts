@@ -1,34 +1,37 @@
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 
-const themes = [
+export let themes: IThemes[]
+
+const constThemes = [
 	{
 		body: '#696969',
 		titleBar: '#494745',
 	},
 ]
 
-type IThemes = typeof themes[0]
-type IKey = keyof IThemes
-
-type IThemeFunc = {
-	[k in IKey]?: (props?: any) => Record<string, string>
+export function InitTheme(exe: (fn: IUseStyle) => IStyle) {
+	if (themes) return
+	const rawThemes = createRawThemes()
+	themes = rawThemes.map(e => exe(e)) as IThemes[]
 }
 
-export const noteTheme = createAll()
-
-function createAll() {
-	return themes.map((e: IThemes) =>
-		Object.keys(e).reduce((a: IThemeFunc, key) => {
-			Object.assign(a, {
-				[key as IKey]: makeStyles(() =>
-					createStyles({
-						[key as IKey]: {
-							backgroundColor: e[key as IKey],
+function createRawThemes(): IUseStyle[] {
+	return constThemes.map(e =>
+		makeStyles(() =>
+			createStyles(
+				Object.keys(e).reduce((a, c) => {
+					return {
+						...a,
+						[c]: {
+							backgroundColor: e[c as keyof typeof e],
 						},
-					})
-				),
-			})
-			return a
-		}, {})
+					}
+				}, {})
+			)
+		)
 	)
 }
+
+type IThemes = typeof constThemes[0]
+type IUseStyle = (props?: any) => Record<string, string>
+type IStyle = Record<string, string>

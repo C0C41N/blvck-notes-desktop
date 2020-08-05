@@ -1,4 +1,4 @@
-require('electron-debug')({ showDevTools: false })
+require('electron-debug')({ showDevTools: true })
 
 require('electron').app.on('ready', () => {
 	require('devtron').install()
