@@ -32,7 +32,7 @@ class userFile {
 	}
 
 	private makeFile(path: string) {
-		writeFileSync(path, JSON.stringify([]))
+		writeFileSync(path, '[]')
 	}
 
 	private isFile = (path: string) => path === this.file

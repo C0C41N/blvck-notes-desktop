@@ -1,11 +1,17 @@
 import { createStyles, makeStyles } from '@material-ui/core/styles'
+import { CSSProperties } from '@material-ui/styles'
 
 export let themes: IThemes[]
 
-const constThemes = [
+const constThemes /* : Record<string, CSSProperties>[] */ = [
 	{
-		body: '#696969',
-		titleBar: '#484644',
+		body: {
+			backgroundColor: '#696969',
+			borderColor: '#505050',
+		},
+		titleBar: {
+			backgroundColor: '#484644',
+		},
 	},
 ]
 
@@ -23,7 +29,7 @@ function createRawThemes(): IUseStyle[] {
 					return {
 						...a,
 						[c]: {
-							backgroundColor: e[c as keyof typeof e],
+							...e[c as keyof typeof e],
 						},
 					}
 				}, {})
@@ -32,6 +38,8 @@ function createRawThemes(): IUseStyle[] {
 	)
 }
 
-type IThemes = typeof constThemes[0]
+type IThemes = {
+	[key in keyof typeof constThemes[0]]: string
+}
 type IUseStyle = (props?: any) => Record<string, string>
 type IStyle = Record<string, string>

@@ -7,12 +7,12 @@ export const newNoteProps = (): INoteWin => {
 		type: 'note',
 		theme: 0,
 		pos: {
-			x: 0,
-			y: 0,
+			x: 50,
+			y: 50,
 		},
 		size: {
-			x: 200,
-			y: 200,
+			x: 350,
+			y: 350,
 		},
 	}
 }
