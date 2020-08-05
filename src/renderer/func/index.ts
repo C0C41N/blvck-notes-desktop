@@ -6,7 +6,7 @@ import { winType } from '../redux/types'
 
 const dispatch = store.dispatch
 
-export async function funcInit() {
+export function funcInit() {
 	ipcListenInit()
 }
 
@@ -19,7 +19,7 @@ export function ipcListenInit() {
 		dispatch(setId(id))
 		dispatch(setType(type))
 
-		if (type === 'note' && theme) {
+		if (type === 'note' && theme !== undefined) {
 			dispatch(setTheme(theme))
 		}
 	})
