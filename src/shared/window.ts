@@ -13,6 +13,8 @@ class createWindow {
 		webPreferences: {
 			nodeIntegration: true,
 		},
+		backgroundColor: '#00000000',
+		transparent: true,
 	}
 
 	protected pos: IXY
