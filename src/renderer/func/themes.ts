@@ -5,7 +5,7 @@ export let themes: IThemes[]
 const constThemes = [
 	{
 		body: '#696969',
-		titleBar: '#494745',
+		titleBar: '#484644',
 	},
 ]
 

@@ -5,14 +5,14 @@ import { useSelector } from 'react-redux'
 import { IState } from '@/redux'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 
-import { themes } from '../func/noteThemes'
+import { themes } from '../func/themes'
 
 const useStyles = makeStyles(() =>
 	createStyles({
 		root: {
 			height: '100vh',
 			width: '100vw',
-			backgroundColor: '#00000040',
+			backgroundColor: '#000',
 		},
 	})
 )
