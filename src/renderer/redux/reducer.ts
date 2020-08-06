@@ -1,7 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 
 import { IState } from './'
-import { winType } from './types'
+import { Theme, winType } from './types'
 
 export const reducers = {
 	setId: (state: IState, action: PayloadAction<string>) => {
@@ -12,7 +12,11 @@ export const reducers = {
 		state.type = action.payload
 	},
 
-	setTheme: (state: IState, action: PayloadAction<number>) => {
+	setTheme: (state: IState, action: PayloadAction<Theme>) => {
 		state.theme = action.payload
+	},
+
+	setSubTheme: (state: IState, action: PayloadAction<number>) => {
+		state.subTheme = action.payload
 	},
 }

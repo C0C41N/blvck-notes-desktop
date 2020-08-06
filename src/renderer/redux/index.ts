@@ -1,14 +1,15 @@
 import { configureStore, createSlice, getDefaultMiddleware } from '@reduxjs/toolkit'
 
 import { reducers } from './reducer'
-import { winType } from './types'
+import { Theme, winType } from './types'
 
 const middlewares = [...getDefaultMiddleware()]
 
 const initState = {
 	id: '',
 	type: null as winType,
-	theme: 0,
+	theme: 'light' as Theme,
+	subTheme: 0,
 }
 
 const slice = createSlice({
@@ -24,7 +25,7 @@ const store = configureStore({
 	middleware: middlewares,
 })
 
-export const { setId, setType, setTheme } = actions
+export const { setId, setType, setTheme, setSubTheme } = actions
 
 export default store
 

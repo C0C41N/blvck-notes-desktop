@@ -1,7 +1,7 @@
 import { ipcRenderer } from 'electron'
 
 import { log } from '../../log'
-import store, { setId, setTheme, setType } from '../redux'
+import store, { setId, setSubTheme, setType } from '../redux'
 import { winType } from '../redux/types'
 
 const dispatch = store.dispatch
@@ -20,7 +20,7 @@ export function ipcListenInit() {
 		dispatch(setType(type))
 
 		if (type === 'note' && theme !== undefined) {
-			dispatch(setTheme(theme))
+			dispatch(setSubTheme(theme))
 		}
 	})
 }
