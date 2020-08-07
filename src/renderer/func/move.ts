@@ -5,6 +5,10 @@ export class move {
 	private mouseX: any
 	private mouseY: any
 
+	public constructor(private id: string) {
+		//
+	}
+
 	private onMouseDown(e: any) {
 		this.mouseX = e.clientX
 		this.mouseY = e.clientY
@@ -21,7 +25,7 @@ export class move {
 	}
 
 	private moveWindow() {
-		ipcRenderer.send('windowMoving', this.mouseX, this.mouseY, id)
+		ipcRenderer.send('windowMoving', this.mouseX, this.mouseY, this.id)
 		this.animationId = requestAnimationFrame(this.moveWindow)
 	}
 }
