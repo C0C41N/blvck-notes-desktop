@@ -5,11 +5,11 @@ export let themes: IThemes[]
 
 const constThemes /* : Record<string, CSSProperties>[] */ = [
 	{
-		body: {
+		bodyCls: {
 			backgroundColor: '#696969',
-			borderColor: '#505050',
+			border: 'solid 1px #505050',
 		},
-		titleBar: {
+		titleBarCls: {
 			backgroundColor: '#484644',
 		},
 	},

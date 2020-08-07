@@ -1,27 +1,35 @@
 import { ipcRenderer } from 'electron'
 
-export class move {
-	private animationId: any
-	private mouseX: any
-	private mouseY: any
+export class TitlebarDragMove {
+	private animationId: number = 0
+	private mouseX: number = 0
+	private mouseY: number = 0
+	private state: boolean = false
 
 	public constructor(private id: string) {
-		//
+		this.onMouseDown = this.onMouseDown.bind(this)
+		this.onMouseUp = this.onMouseUp.bind(this)
+		this.moveWindow = this.moveWindow.bind(this)
 	}
 
-	private onMouseDown(e: any) {
+	public onMouseDown(e: React.MouseEvent) {
+		if (this.state) {
+			this.onMouseUp()
+			return
+		}
+
 		this.mouseX = e.clientX
 		this.mouseY = e.clientY
+		this.state = true
 
 		document.addEventListener('mouseup', this.onMouseUp)
 		requestAnimationFrame(this.moveWindow)
-		console.log(`[${Date.now()}] Down`)
 	}
 
-	private onMouseUp(e: any) {
+	private onMouseUp() {
+		this.state = false
 		document.removeEventListener('mouseup', this.onMouseUp)
 		cancelAnimationFrame(this.animationId)
-		console.log(`[${Date.now()}] Up`)
 	}
 
 	private moveWindow() {

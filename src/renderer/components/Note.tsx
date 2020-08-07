@@ -13,7 +13,6 @@ const useStyles = makeStyles(() =>
 		root: {
 			height: '100vh',
 			width: '100vw',
-			border: 'solid 1px',
 			boxSizing: 'border-box',
 		},
 	})
@@ -24,7 +23,7 @@ export default function Note() {
 
 	const subTheme = useSelector((state: IState) => state.subTheme)
 
-	const { body: bodyCls } = themes[subTheme]
+	const { bodyCls } = themes[subTheme]
 
 	return (
 		<div className={clsx(classes.root, bodyCls)}>
