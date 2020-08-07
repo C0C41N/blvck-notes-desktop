@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 
-import { IListWin, INote, INoteWin } from './window'
+import { IListWin, INote, INoteWin } from './types'
 
 export type WinFile = (INoteWin | IListWin)[]
 export type NoteFile = INote[]
@@ -24,8 +24,7 @@ class userFile {
 		parts.reduce((a: string, e: string) => {
 			const path = a ? [a, e].join('/') : e
 
-			if (!existsSync(path))
-				this.isFile(path) ? this.makeFile(path) : mkdirSync(path)
+			if (!existsSync(path)) this.isFile(path) ? this.makeFile(path) : mkdirSync(path)
 
 			return path
 		}, '')

@@ -21,10 +21,11 @@ const useStyles = makeStyles(() =>
 export default function Titlebar() {
 	const classes = useStyles()
 
+	const theme = useSelector((state: IState) => state.theme)
 	const subTheme = useSelector((state: IState) => state.subTheme)
 	const id = useSelector((state: IState) => state.id)
 
-	const { titleBarCls } = themes[subTheme]
+	const { titleBarCls } = themes[theme][subTheme]
 	const { onMouseDown } = new TitlebarDragMove(id)
 
 	return (

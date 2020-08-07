@@ -21,9 +21,10 @@ const useStyles = makeStyles(() =>
 export default function Note() {
 	const classes = useStyles()
 
+	const theme = useSelector((state: IState) => state.theme)
 	const subTheme = useSelector((state: IState) => state.subTheme)
 
-	const { bodyCls } = themes[subTheme]
+	const { bodyCls } = themes[theme][subTheme]
 
 	return (
 		<div className={clsx(classes.root, bodyCls)}>

@@ -2,7 +2,8 @@ import { ipcMain, screen } from 'electron'
 
 import { log } from '../log'
 import { randomKey } from './func'
-import { createListWindow, createNoteWindow, IListWin, INoteWin } from './window'
+import { IListWin, INoteWin } from './types'
+import { createListWindow, createNoteWindow } from './window'
 
 export class Stack {
 	private stack: stack = {}
@@ -10,14 +11,7 @@ export class Stack {
 	public count = () => Object.keys(this.stack).length
 
 	public constructor() {
-		ipcMain.on('close', (_, id) => {
-			this.stack[id].window.close()
-		})
-
-		ipcMain.on('windowMoving', (_, mouseX, mouseY, id) => {
-			const { x, y } = screen.getCursorScreenPoint()
-			this.stack[id].window.setPosition(x - mouseX, y - mouseY)
-		})
+		this.IPC()
 	}
 
 	public createNoteWindow(winProps: INoteWin) {
@@ -38,6 +32,17 @@ export class Stack {
 
 	private closed(id: string) {
 		delete this.stack[id]
+	}
+
+	private IPC() {
+		ipcMain.on('close', (_, id) => {
+			this.stack[id].window.close()
+		})
+
+		ipcMain.on('windowMoving', (_, mouseX, mouseY, id) => {
+			const { x, y } = screen.getCursorScreenPoint()
+			this.stack[id].window.setPosition(x - mouseX, y - mouseY)
+		})
 	}
 }
 

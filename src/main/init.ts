@@ -1,5 +1,5 @@
 import { App } from 'electron'
-import { IListWin, INoteWin } from 'src/shared/window'
+import { IListWin, INoteWin } from 'src/shared/types'
 
 import { cls } from '../log'
 import { newNoteProps } from '../shared/const'

@@ -1,18 +1,20 @@
-import {
-	BrowserWindow as Window, BrowserWindowConstructorOptions as options, ipcMain, screen
-} from 'electron'
+import { BrowserWindow as Window, nativeTheme, screen } from 'electron'
 
 import { log } from '../log'
-import { winURL } from './const'
+import { Opt, winURL } from './const'
+import { Closed, IListWin, INoteWin, IXY, Theme } from './types'
 
 class createWindow {
 	public window: Window
 
-	private options = Opt
 	private pos: IXY
+	private options = Opt
+
+	protected theme: Theme
 
 	protected constructor(protected id: string, protected winProps: INoteWin | IListWin, protected closed: Closed) {
 		this.pos = this.convertPos()
+		this.theme = this.getTheme()
 
 		this.window = new Window(this.options)
 		this.window.removeMenu()
@@ -20,6 +22,8 @@ class createWindow {
 
 		this.window.on('closed', this.onClosed.bind(this))
 		this.window.on('ready-to-show', this.onReady.bind(this))
+
+		this.IPC()
 	}
 
 	protected onReady() {
@@ -47,6 +51,17 @@ class createWindow {
 			return i > 0 ? i : 0
 		}
 	}
+
+	private getTheme() {
+		return nativeTheme.shouldUseDarkColors ? 'dark' : 'light'
+	}
+
+	private IPC() {
+		nativeTheme.on('updated', () => {
+			this.theme = this.getTheme()
+			this.window.webContents.send('onThemeChange', this.theme)
+		})
+	}
 }
 
 export class createNoteWindow extends createWindow {
@@ -58,7 +73,7 @@ export class createNoteWindow extends createWindow {
 
 	protected onReady() {
 		super.onReady()
-		this.window.webContents.send('init', this.id, 'note', this.winProps.theme)
+		this.window.webContents.send('init', this.id, 'note', this.theme, this.winProps.subTheme)
 	}
 }
 
@@ -71,49 +86,6 @@ export class createListWindow extends createWindow {
 
 	protected onReady() {
 		super.onReady()
-		this.window.webContents.send('init', this.id, 'list')
+		this.window.webContents.send('init', this.id, 'list', this.theme)
 	}
-}
-
-//
-
-const Opt: options = {
-	frame: false,
-	title: 'Blvck Notes',
-	show: false,
-	webPreferences: {
-		nodeIntegration: true,
-	},
-	backgroundColor: '#00000000',
-	transparent: true,
-}
-
-//
-
-export type Closed = (id: string) => void
-
-//
-
-export interface INoteWin {
-	type: 'note'
-	id: string
-	theme: number
-	size: IXY
-	pos: IXY
-}
-
-export interface IListWin {
-	type: 'list'
-	size: IXY
-	pos: IXY
-}
-
-export interface INote {
-	id: string
-	data: string
-}
-
-export interface IXY {
-	x: number
-	y: number
 }
