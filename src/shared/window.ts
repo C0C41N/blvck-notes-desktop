@@ -1,31 +1,17 @@
 import {
-	BrowserWindow as Window, BrowserWindowConstructorOptions as options, screen
+	BrowserWindow as Window, BrowserWindowConstructorOptions as options, ipcMain, screen
 } from 'electron'
 
 import { log } from '../log'
 import { winURL } from './const'
 
 class createWindow {
-	private options: options = {
-		frame: false,
-		title: 'Blvck Notes',
-		show: false,
-		webPreferences: {
-			nodeIntegration: true,
-		},
-		backgroundColor: '#00000000',
-		transparent: true,
-	}
+	public window: Window
 
-	protected pos: IXY
+	private options = Opt
+	private pos: IXY
 
-	protected window: Window
-
-	protected constructor(
-		protected id: string,
-		protected winProps: INoteWin | IListWin,
-		protected closed: Closed
-	) {
+	protected constructor(protected id: string, protected winProps: INoteWin | IListWin, protected closed: Closed) {
 		this.pos = this.convertPos()
 
 		this.window = new Window(this.options)
@@ -61,18 +47,12 @@ class createWindow {
 			return i > 0 ? i : 0
 		}
 	}
-
-	public close() {
-		this.window.close()
-	}
 }
 
 export class createNoteWindow extends createWindow {
-	constructor(
-		protected id: string,
-		protected winProps: INoteWin,
-		protected closed: Closed
-	) {
+	public type = 'note'
+
+	public constructor(protected id: string, protected winProps: INoteWin, protected closed: Closed) {
 		super(id, winProps, closed)
 	}
 
@@ -83,11 +63,9 @@ export class createNoteWindow extends createWindow {
 }
 
 export class createListWindow extends createWindow {
-	constructor(
-		protected id: string,
-		protected winProps: IListWin,
-		protected closed: Closed
-	) {
+	public type = 'list'
+
+	public constructor(protected id: string, protected winProps: IListWin, protected closed: Closed) {
 		super(id, winProps, closed)
 	}
 
@@ -95,6 +73,19 @@ export class createListWindow extends createWindow {
 		super.onReady()
 		this.window.webContents.send('init', this.id, 'list')
 	}
+}
+
+//
+
+const Opt: options = {
+	frame: false,
+	title: 'Blvck Notes',
+	show: false,
+	webPreferences: {
+		nodeIntegration: true,
+	},
+	backgroundColor: '#00000000',
+	transparent: true,
 }
 
 //

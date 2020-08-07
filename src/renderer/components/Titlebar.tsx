@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import { ipcRenderer } from 'electron'
 import React from 'react'
 import { useSelector } from 'react-redux'
 
@@ -22,19 +23,37 @@ export default function Titlebar() {
 	const classes = useStyles()
 
 	const subTheme = useSelector((state: IState) => state.subTheme)
+	const id = useSelector((state: IState) => state.id)
 
 	const { titleBar: titlebarCls } = themes[subTheme]
-	alert('ok')
+
+	let animationId: any
+	let mouseX: any
+	let mouseY: any
+
+	function onMouseDown(e: any) {
+		mouseX = e.clientX
+		mouseY = e.clientY
+
+		document.addEventListener('mouseup', onMouseUp)
+		requestAnimationFrame(moveWindow)
+		console.log(`[${Date.now()}] Down`)
+	}
+
+	function onMouseUp(e: any) {
+		document.removeEventListener('mouseup', onMouseUp)
+		cancelAnimationFrame(animationId)
+		console.log(`[${Date.now()}] Up`)
+	}
+
+	function moveWindow() {
+		ipcRenderer.send('windowMoving', mouseX, mouseY, id)
+		animationId = requestAnimationFrame(moveWindow)
+	}
 
 	return (
-		<div
-			className={clsx(classes.root, titlebarCls)}
-			onContextMenu={e => {
-				console.log('context')
-			}}
-			onClick={() => {
-				alert('click')
-			}}
-		></div>
+		<div className={clsx(classes.root, titlebarCls)} onMouseDown={onMouseDown}>
+			<div></div>
+		</div>
 	)
 }

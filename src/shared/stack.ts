@@ -1,4 +1,4 @@
-import { ipcMain } from 'electron'
+import { ipcMain, screen } from 'electron'
 
 import { log } from '../log'
 import { randomKey } from './func'
@@ -13,41 +13,36 @@ export class Stack {
 		ipcMain.on('close', (_, id) => {
 			this.stack[id].window.close()
 		})
+
+		ipcMain.on('windowMoving', (_, mouseX, mouseY, id) => {
+			const { x, y } = screen.getCursorScreenPoint()
+			this.stack[id].window.setPosition(x - mouseX, y - mouseY)
+		})
 	}
 
 	public createNoteWindow(winProps: INoteWin) {
 		const id = randomKey(8)
 		const window = new createNoteWindow(id, winProps, this.closed.bind(this))
-		this.push(id, window, 'note')
+		this.push(id, window)
 	}
 
 	public createListWindow(winProps: IListWin) {
 		const id = randomKey(8)
 		const window = new createListWindow(id, winProps, this.closed.bind(this))
-		this.push(id, window, 'list')
+		this.push(id, window)
 	}
 
-	private push(
-		id: string,
-		window: createListWindow | createNoteWindow,
-		type: 'note' | 'list'
-	) {
-		Object.assign(this.stack, { [id]: { type, window } })
-		// log(['Push', { stack: this.count() }])
+	private push(id: string, window: createListWindow | createNoteWindow) {
+		Object.assign(this.stack, { [id]: window })
 	}
 
 	private closed(id: string) {
 		delete this.stack[id]
-		// log(['Close', { stack: this.count() }])
 	}
 }
 
 //
 
 export interface stack {
-	[index: string]: {
-		id: string
-		type: 'note' | 'list'
-		window: createNoteWindow | createListWindow
-	}
+	[index: string]: createNoteWindow | createListWindow
 }
