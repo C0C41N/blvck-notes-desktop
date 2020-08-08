@@ -1,5 +1,7 @@
 import { remote } from 'electron'
 
+import { log } from '../../log'
+
 export class TitlebarDragMove {
 	private animationId: number = 0
 	private mouseX: number = 0
@@ -16,6 +18,7 @@ export class TitlebarDragMove {
 	}
 
 	public onMouseDown(e: React.MouseEvent) {
+		log(['Down', { state: this.state }])
 		if (this.state) {
 			this.onMouseUp()
 			return
@@ -30,6 +33,7 @@ export class TitlebarDragMove {
 	}
 
 	private onMouseUp() {
+		log(['UP', { state: this.state }])
 		this.state = false
 		document.removeEventListener('mouseup', this.onMouseUp)
 		cancelAnimationFrame(this.animationId)

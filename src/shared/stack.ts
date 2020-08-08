@@ -1,6 +1,3 @@
-import { ipcMain, screen } from 'electron'
-
-import { log } from '../log'
 import { randomKey } from './func'
 import { IListWin, INoteWin } from './types'
 import { createListWindow, createNoteWindow } from './window'
@@ -9,10 +6,6 @@ export class Stack {
 	private stack: stack = {}
 
 	public count = () => Object.keys(this.stack).length
-
-	public constructor() {
-		this.IPC()
-	}
 
 	public createNoteWindow(winProps: INoteWin) {
 		const id = randomKey(8)
@@ -32,12 +25,6 @@ export class Stack {
 
 	private closed(id: string) {
 		delete this.stack[id]
-	}
-
-	private IPC() {
-		ipcMain.on('close', (_, id) => {
-			this.stack[id].window.close()
-		})
 	}
 }
 

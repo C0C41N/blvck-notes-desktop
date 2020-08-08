@@ -11,10 +11,6 @@ export function funcInit() {
 	ipcListenTheme()
 }
 
-export function closeWindow(id: string) {
-	ipcRenderer.send('close', id)
-}
-
 function ipcListenInit() {
 	ipcRenderer.on('init', (_, id: string, type: winType, theme: Theme, subTheme?: number) => {
 		dispatch(setId(id))
