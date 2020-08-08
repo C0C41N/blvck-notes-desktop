@@ -66,7 +66,11 @@ let rendererConfig = {
 				use: 'node-loader',
 			},
 			{
-				test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+				test: /\.svg$/,
+				use: ['@svgr/webpack', 'url-loader'],
+			},
+			{
+				test: /\.(png|jpe?g|gif)(\?.*)?$/,
 				use: {
 					loader: 'url-loader',
 					query: {
