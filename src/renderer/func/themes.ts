@@ -61,5 +61,6 @@ interface IThemes {
 type Themes = {
 	[key in keyof typeof lightThemes[0]]: string
 }
+
 type IUseStyle = (props?: any) => Record<string, string>
 type IStyle = Record<string, string>

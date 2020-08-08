@@ -1,20 +1,18 @@
-import { BrowserWindow as Window, nativeTheme, screen } from 'electron'
+import { BrowserWindow as Window, screen } from 'electron'
 
-import { log } from '../log'
 import { Opt, winURL } from './const'
-import { Closed, IListWin, INoteWin, IXY, Theme } from './types'
+import { Closed, IListWin, InitIPCArgs, INoteWin, IXY, winType } from './types'
 
 class createWindow {
+	public type: winType
 	public window: Window
 
 	private pos: IXY
 	private options = Opt
 
-	protected theme: Theme
-
 	protected constructor(protected id: string, protected winProps: INoteWin | IListWin, protected closed: Closed) {
+		this.type = this.winProps.type
 		this.pos = this.convertPos()
-		this.theme = this.getTheme()
 
 		this.window = new Window(this.options)
 		this.window.removeMenu()
@@ -22,8 +20,6 @@ class createWindow {
 
 		this.window.on('closed', this.onClosed.bind(this))
 		this.window.on('ready-to-show', this.onReady.bind(this))
-
-		this.IPC()
 	}
 
 	protected onReady() {
@@ -51,41 +47,33 @@ class createWindow {
 			return i > 0 ? i : 0
 		}
 	}
-
-	private getTheme() {
-		return nativeTheme.shouldUseDarkColors ? 'dark' : 'light'
-	}
-
-	private IPC() {
-		nativeTheme.on('updated', () => {
-			this.theme = this.getTheme()
-			this.window.webContents.send('onThemeChange', this.theme)
-		})
-	}
 }
 
 export class createNoteWindow extends createWindow {
-	public type = 'note'
-
 	public constructor(protected id: string, protected winProps: INoteWin, protected closed: Closed) {
 		super(id, winProps, closed)
 	}
 
 	protected onReady() {
 		super.onReady()
-		this.window.webContents.send('init', this.id, 'note', this.theme, this.winProps.subTheme)
+		this.window.webContents.send('init', {
+			id: this.id,
+			type: this.type,
+			subTheme: this.winProps.subTheme,
+		} as InitIPCArgs)
 	}
 }
 
 export class createListWindow extends createWindow {
-	public type = 'list'
-
 	public constructor(protected id: string, protected winProps: IListWin, protected closed: Closed) {
 		super(id, winProps, closed)
 	}
 
 	protected onReady() {
 		super.onReady()
-		this.window.webContents.send('init', this.id, 'list', this.theme)
+		this.window.webContents.send('init', {
+			id: this.id,
+			type: this.type,
+		} as InitIPCArgs)
 	}
 }

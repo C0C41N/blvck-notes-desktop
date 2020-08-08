@@ -1,21 +1,25 @@
-import { ipcRenderer } from 'electron'
+import { ipcRenderer, remote } from 'electron'
+import { log } from 'src/log'
+import { InitIPCArgs } from 'src/shared/types'
 
-import { log } from '../../log'
 import store, { setId, setSubTheme, setTheme, setType } from '../redux'
-import { Theme, winType } from '../redux/types'
 
 const dispatch = store.dispatch
 
 export function funcInit() {
 	ipcListenInit()
-	ipcListenTheme()
+	setInitTheme()
+	listenTheme()
+}
+
+function setInitTheme() {
+	dispatch(setTheme(getTheme()))
 }
 
 function ipcListenInit() {
-	ipcRenderer.on('init', (_, id: string, type: winType, theme: Theme, subTheme?: number) => {
+	ipcRenderer.on('init', (_, { id, type, subTheme }: InitIPCArgs) => {
 		dispatch(setId(id))
 		dispatch(setType(type))
-		dispatch(setTheme(theme))
 
 		if (type === 'note' && subTheme !== undefined) {
 			dispatch(setSubTheme(subTheme))
@@ -23,8 +27,12 @@ function ipcListenInit() {
 	})
 }
 
-function ipcListenTheme() {
-	ipcRenderer.on('onThemeChange', (_, theme: Theme) => {
-		dispatch(setTheme(theme))
+function listenTheme() {
+	remote.nativeTheme.on('updated', () => {
+		setInitTheme()
 	})
+}
+
+function getTheme() {
+	return remote.nativeTheme.shouldUseDarkColors ? 'dark' : 'light'
 }

@@ -1,13 +1,14 @@
+import { Theme, winType } from 'src/shared/types'
+
 import { configureStore, createSlice, getDefaultMiddleware } from '@reduxjs/toolkit'
 
 import { reducers } from './reducer'
-import { Theme, winType } from './types'
 
 const middlewares = [...getDefaultMiddleware()]
 
 const initState = {
 	id: '',
-	type: null as winType,
+	type: 'note' as winType,
 	theme: 'light' as Theme,
 	subTheme: 0,
 }

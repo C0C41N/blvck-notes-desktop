@@ -1,6 +1,5 @@
 import { remote } from 'electron'
-
-import { log } from '../../log'
+import { log } from 'src/log'
 
 export class TitlebarDragMove {
 	private animationId: number = 0

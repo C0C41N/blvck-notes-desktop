@@ -1,5 +1,6 @@
 export type Closed = (id: string) => void
 export type Theme = 'light' | 'dark'
+export type winType = 'note' | 'list'
 
 //
 
@@ -25,4 +26,10 @@ export interface INote {
 export interface IXY {
 	x: number
 	y: number
+}
+
+export interface InitIPCArgs {
+	id: string
+	type: 'list' | 'note'
+	subTheme?: number
 }

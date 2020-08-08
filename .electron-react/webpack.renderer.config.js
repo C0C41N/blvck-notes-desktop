@@ -22,10 +22,7 @@ const rendererPath = path.resolve('src/renderer')
 let rendererConfig = {
 	devtool: '#cheap-module-eval-source-map',
 	entry: {
-		renderer: [
-			'react-hot-loader/patch',
-			path.join(__dirname, '../src/renderer/index.tsx'),
-		],
+		renderer: ['react-hot-loader/patch', path.join(__dirname, '../src/renderer/index.tsx')],
 	},
 	// externals: [
 	//   ...Object.keys(dependencies || {}).filter(
@@ -36,37 +33,22 @@ let rendererConfig = {
 		rules: [
 			{
 				test: /\.scss$/,
-				use: [
-					isProd ? MiniCssExtractPlugin.loader : 'style-loader',
-					'css-loader',
-					'sass-loader',
-				],
+				use: [isProd ? MiniCssExtractPlugin.loader : 'style-loader', 'css-loader', 'sass-loader'],
 				include: [rendererPath],
 			},
 			{
 				test: /\.sass$/,
-				use: [
-					isProd ? MiniCssExtractPlugin.loader : 'style-loader',
-					'css-loader',
-					'sass-loader?indentedSyntax',
-				],
+				use: [isProd ? MiniCssExtractPlugin.loader : 'style-loader', 'css-loader', 'sass-loader?indentedSyntax'],
 				include: [rendererPath],
 			},
 			{
 				test: /\.less$/,
-				use: [
-					isProd ? MiniCssExtractPlugin.loader : 'style-loader',
-					'css-loader',
-					'less-loader',
-				],
+				use: [isProd ? MiniCssExtractPlugin.loader : 'style-loader', 'css-loader', 'less-loader'],
 				include: [rendererPath],
 			},
 			{
 				test: /\.css$/,
-				use: [
-					isProd ? MiniCssExtractPlugin.loader : 'style-loader',
-					'css-loader',
-				],
+				use: [isProd ? MiniCssExtractPlugin.loader : 'style-loader', 'css-loader'],
 				include: [rendererPath],
 			},
 			{
@@ -129,9 +111,7 @@ let rendererConfig = {
 				removeComments: true, // 移除注释
 				collapseBooleanAttributes: true, // 省略只有 boolean 值的属性值 例如：readonly checked
 			},
-			nodeModules: isNotProd
-				? path.resolve(__dirname, '../node_modules')
-				: false,
+			nodeModules: isNotProd ? path.resolve(__dirname, '../node_modules') : false,
 		}),
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NoEmitOnErrorsPlugin(),
@@ -145,6 +125,7 @@ let rendererConfig = {
 		modules: ['src', 'node_modules'],
 		alias: {
 			'@': path.join(__dirname, '../src/renderer'),
+			src: path.join(__dirname, '../src'),
 			'react-dom': '@hot-loader/react-dom',
 		},
 		extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.css', '.node'],
@@ -170,10 +151,7 @@ if (isProd) {
 	rendererConfig.devtool = ''
 	rendererConfig.optimization = {
 		minimize: true,
-		minimizer: [
-			new TerserPlugin({ extractComments: false }),
-			new OptimizeCSSAssetsPlugin({}),
-		],
+		minimizer: [new TerserPlugin({ extractComments: false }), new OptimizeCSSAssetsPlugin({})],
 	}
 
 	rendererConfig.plugins.push(
