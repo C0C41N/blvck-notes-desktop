@@ -1,15 +1,18 @@
-import { ipcRenderer } from 'electron'
+import { remote } from 'electron'
 
 export class TitlebarDragMove {
 	private animationId: number = 0
 	private mouseX: number = 0
 	private mouseY: number = 0
 	private state: boolean = false
+	private window: Electron.BrowserWindow
 
 	public constructor(private id: string) {
 		this.onMouseDown = this.onMouseDown.bind(this)
 		this.onMouseUp = this.onMouseUp.bind(this)
 		this.moveWindow = this.moveWindow.bind(this)
+
+		this.window = remote.getCurrentWindow()
 	}
 
 	public onMouseDown(e: React.MouseEvent) {
@@ -33,7 +36,8 @@ export class TitlebarDragMove {
 	}
 
 	private moveWindow() {
-		ipcRenderer.send('windowMoving', this.mouseX, this.mouseY, this.id)
+		const { x, y } = remote.screen.getCursorScreenPoint()
+		this.window.setPosition(x - this.mouseX, y - this.mouseY)
 		this.animationId = requestAnimationFrame(this.moveWindow)
 	}
 }

@@ -38,11 +38,6 @@ export class Stack {
 		ipcMain.on('close', (_, id) => {
 			this.stack[id].window.close()
 		})
-
-		ipcMain.on('windowMoving', (_, mouseX, mouseY, id) => {
-			const { x, y } = screen.getCursorScreenPoint()
-			this.stack[id].window.setPosition(x - mouseX, y - mouseY)
-		})
 	}
 }
 
