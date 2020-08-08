@@ -1,13 +1,12 @@
 import clsx from 'clsx'
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { log } from 'src/log'
 
+import { TitlebarDragMove } from '@/func/move'
+import { themes } from '@/func/themes'
+import { IState } from '@/redux'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
-
-import { log } from '../../log'
-import { TitlebarDragMove } from '../func/move'
-import { themes } from '../func/themes'
-import { IState } from '../redux'
 
 const useStyles = makeStyles(() =>
 	createStyles({
