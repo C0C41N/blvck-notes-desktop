@@ -1,5 +1,4 @@
 import { ipcRenderer, remote } from 'electron'
-import { log } from 'src/log'
 import { InitIPCArgs } from 'src/shared/types'
 
 import store, { setId, setSubTheme, setTheme, setType } from '../redux'
@@ -10,6 +9,10 @@ export function funcInit() {
 	ipcListenInit()
 	setInitTheme()
 	listenTheme()
+}
+
+export function closeWin() {
+	remote.getCurrentWindow().close()
 }
 
 function setInitTheme() {

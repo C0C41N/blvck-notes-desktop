@@ -1,8 +1,9 @@
 import clsx from 'clsx'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { cls, log } from 'src/log'
+import { cls } from 'src/log'
 
+import { closeWin } from '@/func'
 import { TitlebarDragMove } from '@/func/move'
 import { themes } from '@/func/themes'
 import { IState } from '@/redux'
@@ -45,7 +46,7 @@ export default function Titlebar() {
 			<BtnSvg component={BtnAdd} fill={color} />
 			<div className={classes.spacer} />
 			<BtnSvg component={BtnDots} fill={color} />
-			<BtnSvg component={BtnClose} fill={color} />
+			<BtnSvg component={BtnClose} fill={color} onClick={closeWin} />
 		</div>
 	)
 }
