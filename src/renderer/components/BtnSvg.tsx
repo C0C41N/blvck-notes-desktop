@@ -1,15 +1,14 @@
 import React from 'react'
-import { log } from 'src/log'
 
-import { IconButton, SvgIcon } from '@material-ui/core'
+import { IconButton, IconButtonProps, SvgIcon } from '@material-ui/core'
 import { createStyles, makeStyles } from '@material-ui/styles'
 
-export default function BtnSvg({ height = 32, width = 32, color = '#fff', component }: IBtnSvgProps) {
+export default function BtnSvg({ height = 32, width = 32, fill = '#fff', component, ...args }: IBtnSvgProps) {
 	const useStyles = makeStyles(() =>
 		createStyles({
 			svg: {
 				'& > path': {
-					fill: color,
+					fill: fill,
 				},
 			},
 		})
@@ -17,17 +16,16 @@ export default function BtnSvg({ height = 32, width = 32, color = '#fff', compon
 
 	const classes = useStyles()
 
-	log({ height, width, color, component })
 	return (
-		<IconButton style={{ padding: 0, borderRadius: 0 }} disableRipple>
-			<SvgIcon style={{ width, height }} className={classes.svg} component={component} viewBox={`0 0 ${width} ${height}`} htmlColor={color}></SvgIcon>
+		<IconButton style={{ padding: 0, borderRadius: 0 }} disableRipple {...args}>
+			<SvgIcon style={{ width, height }} className={classes.svg} component={component} viewBox={`0 0 ${width} ${height}`} htmlColor={fill}></SvgIcon>
 		</IconButton>
 	)
 }
 
-interface IBtnSvgProps {
+interface IBtnSvgProps extends IconButtonProps {
 	height?: number
 	width?: number
-	color?: string
-	component: any
+	fill?: string
+	component: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
 }

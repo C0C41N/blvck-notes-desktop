@@ -6,9 +6,9 @@ import { cls, log } from 'src/log'
 import { TitlebarDragMove } from '@/func/move'
 import { themes } from '@/func/themes'
 import { IState } from '@/redux'
-import { ReactComponent as BtnAdd } from '@/svgs/Btn_Add.svg'
-import { ReactComponent as BtnClose } from '@/svgs/Btn_Close.svg'
-import { ReactComponent as BtnDots } from '@/svgs/Btn_Dots.svg'
+import { ReactComponent as BtnAdd } from '@/svgs/Add.svg'
+import { ReactComponent as BtnClose } from '@/svgs/Close.svg'
+import { ReactComponent as BtnDots } from '@/svgs/Dots.svg'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 
 import BtnSvg from './BtnSvg'
@@ -19,6 +19,9 @@ const useStyles = makeStyles(() =>
 			width: '100%',
 			height: 32,
 			display: 'flex',
+		},
+		spacer: {
+			flexGrow: 1,
 		},
 	})
 )
@@ -39,9 +42,10 @@ export default function Titlebar() {
 
 	return (
 		<div className={clsx(classes.root, titleBarCls)} onMouseDown={onMouseDown}>
-			<BtnSvg component={BtnAdd} color={color} />
-			<BtnSvg component={BtnDots} color={color} />
-			<BtnSvg component={BtnClose} />
+			<BtnSvg component={BtnAdd} fill={color} />
+			<div className={classes.spacer} />
+			<BtnSvg component={BtnDots} fill={color} />
+			<BtnSvg component={BtnClose} fill={color} />
 		</div>
 	)
 }
