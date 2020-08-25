@@ -6,6 +6,7 @@ import { themes } from '@/func/themes'
 import { IState } from '@/redux'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 
+import NotesFooter from './NotesFooter'
 import Titlebar from './Titlebar'
 
 const useStyles = makeStyles(() =>
@@ -29,6 +30,7 @@ export default function Note() {
 	return (
 		<div className={clsx(classes.root, bodyCls)}>
 			<Titlebar />
+			<NotesFooter />
 		</div>
 	)
 }
