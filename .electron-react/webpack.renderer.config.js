@@ -49,7 +49,7 @@ let rendererConfig = {
 			{
 				test: /\.css$/,
 				use: [isProd ? MiniCssExtractPlugin.loader : 'style-loader', 'css-loader'],
-				include: [rendererPath, path.resolve('node_modules/react-quill/dist/')],
+				include: [rendererPath, path.resolve('node_modules/draft-js/dist/')],
 			},
 			{
 				test: /\.(js|jsx|ts|tsx)$/,

@@ -36,18 +36,47 @@ const useStyles = makeStyles(() =>
 	})
 )
 
-export default function NotesFooter() {
+export default function NotesFooter(props: INotesFooterProps) {
 	const classes = useStyles()
 	const color = '#D4D4D4'
 
+	const { bold, setBold, italic, setItalic, underline, setUnderline, strike, setStrike } = props
+
 	return (
 		<div className={classes.root}>
-			<BtnSvg component={Bold} fill={color} />
-			<BtnSvg component={Italic} fill={color} />
-			<BtnSvg component={Underline} fill={color} />
-			<BtnSvg component={Strikethrough} fill={color} />
+			<BtnSvg component={Bold} fill={color} toggle={bold} onClick={toggleBold} />
+			<BtnSvg component={Italic} fill={color} toggle={italic} onClick={toggleItalic} />
+			<BtnSvg component={Underline} fill={color} toggle={underline} onClick={toggleUnderline} />
+			<BtnSvg component={Strikethrough} fill={color} toggle={strike} onClick={toggleStrike} />
 			<BtnSvg component={Bullets} />
 			<BtnSvg component={Picture} fill={'transparent'} stroke={color} />
 		</div>
 	)
+
+	function toggleBold() {
+		setBold(!bold)
+	}
+
+	function toggleItalic() {
+		setItalic(!italic)
+	}
+
+	function toggleUnderline() {
+		setUnderline(!underline)
+	}
+
+	function toggleStrike() {
+		setStrike(!strike)
+	}
+}
+
+interface INotesFooterProps {
+	bold: boolean
+	italic: boolean
+	underline: boolean
+	strike: boolean
+	setBold: (bold: boolean) => void
+	setItalic: (italic: boolean) => void
+	setUnderline: (underline: boolean) => void
+	setStrike: (strike: boolean) => void
 }

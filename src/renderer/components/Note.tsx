@@ -1,5 +1,6 @@
 import clsx from 'clsx'
-import React from 'react'
+import { EditorState } from 'draft-js'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import { themes } from '@/func/themes'
@@ -28,11 +29,34 @@ export default function Note() {
 
 	const { bodyCls } = themes[theme][subTheme]
 
+	const [editorState, setEditorState] = useState(() => EditorState.createEmpty())
+	const [bold, setBold] = useState(false)
+	const [italic, setItalic] = useState(false)
+	const [underline, setUnderline] = useState(false)
+	const [strike, setStrike] = useState(false)
+
 	return (
 		<div className={clsx(classes.root, bodyCls)}>
 			<Titlebar />
-			<NoteText />
-			<NotesFooter />
+			<NoteText
+				editorState={editorState}
+				setEditorState={setEditorState}
+				bold={bold}
+				italic={italic}
+				underline={underline}
+				strike={strike}
+				setStrike={setStrike}
+			/>
+			<NotesFooter
+				bold={bold}
+				italic={italic}
+				underline={underline}
+				strike={strike}
+				setBold={setBold}
+				setItalic={setItalic}
+				setUnderline={setUnderline}
+				setStrike={setStrike}
+			/>
 		</div>
 	)
 }
